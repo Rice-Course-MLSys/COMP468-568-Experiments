@@ -54,8 +54,8 @@ This project has been adapted for the Rice NOTS cluster. See `docs/NOTS_SETUP.md
 ### Required Modules
 Load these modules on your cluster:
 ```bash
-module load cuda                # NOTS automatically handles versioning
-module load gcc                 # C++ compiler
+module load CUDA                # NOTS automatically handles versioning (watch out: capitalize the letters here)
+module load GCC/11.2.0                 # C++ compiler (watch out: capitalize the letters here)
 module load slurm               # Slurm (usually pre-loaded)
 ```
 
