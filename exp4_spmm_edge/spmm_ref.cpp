@@ -69,6 +69,27 @@ void load_csr_from_edgelist(
     }
 }
 
+// CPU reference: SDDMM — for each edge (i, j), compute dot(E[i,:], E[j,:])
+void sddmm_cpu(int M, int D,
+               const std::vector<int>& row_ptr,
+               const std::vector<int>& col_idx,
+               const std::vector<float>& E,        // M x D, row-major
+               std::vector<float>& vals_out)        // nnz
+{
+    int nnz = row_ptr[M];
+    vals_out.resize(nnz);
+    for (int i = 0; i < M; i++) {
+        for (int p = row_ptr[i]; p < row_ptr[i+1]; ++p) {
+            int j = col_idx[p];
+            float dot = 0.0f;
+            for (int d = 0; d < D; d++) {
+                dot += E[(size_t)i * D + d] * E[(size_t)j * D + d];
+            }
+            vals_out[p] = dot;
+        }
+    }
+}
+
 // CPU reference: C = A (CSR) * B (dense)
 void spmm_cpu(int M, int K, int N,
               const std::vector<int>& row_ptr,
